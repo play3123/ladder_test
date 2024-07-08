@@ -8,6 +8,9 @@
 </head>
 <body>
     <h1>사다리타기</h1>
+    <label for="numParticipants">참가자 수 선택 (최대 50명):</label>
+    <input type="number" id="numParticipants" name="numParticipants" min="2" max="50" value="10">
+    <button onclick="generateLadder()">사다리 생성</button>
     <div id="ladder-container"></div>
     <div id="result"></div>
     <script src="script.js"></script>
