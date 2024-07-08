@@ -9,16 +9,24 @@ function generateLadder() {
     const choices = Array(parseInt(numParticipants) - 4).fill('일반').concat(Array(4).fill('리저브'));
     shuffle(choices);
 
+    const steps = [];
+    for (let i = 0; i < numParticipants; i++) {
+        steps[i] = [];
+        for (let j = 0; j < 10; j++) {
+            steps[i][j] = Math.random() > 0.7 && i < numParticipants - 1;
+        }
+    }
+
     for (let i = 0; i < numParticipants; i++) {
         const column = document.createElement('div');
         column.className = 'column';
-        column.dataset.result = choices[i % choices.length];
+        column.dataset.index = i;
 
         for (let j = 0; j < 10; j++) {
             const step = document.createElement('div');
             step.className = 'step';
 
-            if (Math.random() > 0.7 && i < numParticipants - 1) {
+            if (steps[i][j]) {
                 const horizontal = document.createElement('div');
                 horizontal.className = 'horizontal';
                 step.appendChild(horizontal);
@@ -28,12 +36,24 @@ function generateLadder() {
         }
 
         column.addEventListener('click', () => {
-            const result = column.dataset.result;
+            const result = tracePath(i, steps, choices);
             document.getElementById('result').textContent = `결과: ${result}`;
         });
 
         ladderContainer.appendChild(column);
     }
+}
+
+function tracePath(startIndex, steps, choices) {
+    let currentIndex = startIndex;
+    for (let j = 0; j < steps[0].length; j++) {
+        if (currentIndex < steps.length - 1 && steps[currentIndex][j]) {
+            currentIndex++;
+        } else if (currentIndex > 0 && steps[currentIndex - 1][j]) {
+            currentIndex--;
+        }
+    }
+    return choices[currentIndex];
 }
 
 function shuffle(array) {
