@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', () => {
+    generateLadder();
+});
+
 function generateLadder() {
     const numParticipants = document.getElementById('numParticipants').value;
     const ladderContainer = document.getElementById('ladder-container');
